@@ -102,7 +102,9 @@ public class BridgeAdapter implements IBridgeAdapter {
         }
     }
 
-    /** send message to html */
+    /**
+     * send message to html
+     */
     void dispatchMessage(Message m) {
         String messageJson = m.toJson();
         messageJson = messageJson.replaceAll("(\\\\)([^utrn])", "\\\\\\\\$1$2");

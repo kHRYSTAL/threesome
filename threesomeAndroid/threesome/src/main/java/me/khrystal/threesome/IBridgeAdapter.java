@@ -11,6 +11,6 @@ import me.khrystal.threesome.core.WebViewJavascriptBridge;
  * email: 723526676@qq.com
  */
 
-public interface IBridgeAdapter extends WebViewJavascriptBridge{
+public interface IBridgeAdapter extends WebViewJavascriptBridge {
     void setClient(BridgeWebViewClient client);
 }

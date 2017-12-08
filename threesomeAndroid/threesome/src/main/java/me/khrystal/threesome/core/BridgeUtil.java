@@ -1,7 +1,6 @@
 package me.khrystal.threesome.core;
 
 import android.content.Context;
-import android.util.Log;
 import android.webkit.WebView;
 
 import java.io.BufferedReader;
@@ -65,14 +64,14 @@ public class BridgeUtil {
         return null;
     }
 
-    public static void webViewLoadLocalJs(WebView view, String path){
+    public static void webViewLoadLocalJs(WebView view, String path) {
         String jsContent = assetFile2Str(view.getContext(), path);
         view.loadUrl(JAVASCRIPT_STR + jsContent);
     }
 
-    public static String assetFile2Str(Context c, String urlStr){
+    public static String assetFile2Str(Context c, String urlStr) {
         InputStream in = null;
-        try{
+        try {
             in = c.getAssets().open(urlStr);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
             String line = null;
@@ -89,7 +88,7 @@ public class BridgeUtil {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(in != null) {
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {

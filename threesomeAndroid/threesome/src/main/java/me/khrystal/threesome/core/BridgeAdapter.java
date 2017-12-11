@@ -7,6 +7,7 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class BridgeAdapter implements IBridgeAdapter {
     public static final String toLoadJs = "WebViewJavascriptBridge.js";
     Map<String, CallbackFunction> responseCallbacks = new HashMap<>();
     Map<String, BridgeHandler> messageHandlers = new HashMap<>();
-    BridgeHandler defaultHander = new DefaultHandler();
+    BridgeHandler defaultHandler = new DefaultHandler();
     private Gson gson = GsonHelper.GetCommonGson();
 
     private WebView mWebView;
@@ -116,7 +117,72 @@ public class BridgeAdapter implements IBridgeAdapter {
     }
 
     void flushMessageQueen() {
-        // TODO: 17/12/4 when get schema is threesome, need flush message queue
+        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
+            loadUrl(BridgeUtil.JS_FETCH_QUEUE_FRAM_JAVA, new CallbackFunction() {
+                @Override
+                public void onCallback(Object data) {
+                    // deserializeMessage
+                    List<Message> list = null;
+                    try {
+                        list = gson.fromJson(data.toString(), new TypeToken<List<Message>>() {
+                        }.getType());
+                    } catch (Exception e) {
+                        // notice: if callback data is null or not json will return here
+                        Log.e(Constants.TAG, "json parse error!");
+                        e.printStackTrace();
+                        return;
+                    }
+                    if (list.isEmpty()) {
+                        return;
+                    }
+                    for (int i = 0; i < list.size(); i++) {
+                        Message m = list.get(i);
+                        String responseId = m.getResponseId();
+                        if (!StringUtil.isNullOrEmpty(responseId)) {
+                            // is response
+                            CallbackFunction function = responseCallbacks.get(responseId);
+                            function.onCallback(m.getData());
+                            responseCallbacks.remove(responseId);
+                        } else {
+                            CallbackFunction responseFunction = null;
+                            // if had callbackId
+                            final String callbackId = m.getCallbackId();
+                            if (!StringUtil.isNullOrEmpty(callbackId)) {
+                                responseFunction = new CallbackFunction() {
+                                    @Override
+                                    public void onCallback(Object data) {
+                                        Message responseMsg = new Message();
+                                        responseMsg.setResponseId(callbackId);
+                                        responseMsg.setData(data);
+                                        Log.e(Constants.TAG, "response: " + data);
+                                        queueMessage(responseMsg);
+                                    }
+                                };
+                            } else {
+                                responseFunction = new CallbackFunction() {
+                                    @Override
+                                    public void onCallback(Object data) {
+                                        // do nothing
+                                        Log.e(Constants.TAG, "response: " + data);
+                                    }
+                                };
+                            }
+                            BridgeHandler handler;
+                            if (!StringUtil.isNullOrEmpty(m.getHandlerName())) {
+                                handler = messageHandlers.get(m.getHandlerName());
+                            } else {
+                                handler = defaultHandler;
+                            }
+                            if (handler != null) {
+                                String param = m.getData() == null ? null : gson.toJson(m.getData());
+                                handler.handler(param, responseFunction, BridgeAdapter.this);
+                            }
+                        }
+                    }
+                }
+
+            });
+        }
     }
 
     public void loadUrl(String jsUrl, CallbackFunction returnCallback) {

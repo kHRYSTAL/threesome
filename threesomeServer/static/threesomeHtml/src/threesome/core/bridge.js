@@ -1,6 +1,3 @@
-/**
- * Created by kHRYSTAL on 17/12/14.
- */
 var callQueue = [];
 var registerQueue = [];
 
@@ -42,6 +39,6 @@ function createBridge() {
     return fakeBridge;
 }
 
-var bridge = window.WebViewJavascriptBridge ? window.WebViewJavascriptBridge : createBridge()
+var bridge = window.WebViewJavascriptBridge ? window.WebViewJavascriptBridge : createBridge();
 
 export {bridge}

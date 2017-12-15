@@ -1,6 +1,3 @@
-/**
- * Created by kHRYSTAL on 17/12/14.
- */
 import {warn, _formatParam, _decodeString} from '../util/output';
 import {bridge} from './bridge';
 

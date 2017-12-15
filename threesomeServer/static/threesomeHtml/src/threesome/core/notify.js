@@ -1,7 +1,4 @@
-/**
- * Created by kHRYSTAL on 17/12/14.
- */
-import {_registerHandler, _callHandler} from './handler';
+import {_registerHandler} from './handler';
 
 var obMap = {};
 export function _registerNotify(key, event) {

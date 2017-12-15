@@ -1,6 +1,3 @@
-/**
- * Created by kHRYSTAL on 17/12/14.
- */
 import  {clone} from '../../lib/clone'
 
 // handle send message to format need encode to support Android and iOS
@@ -26,6 +23,6 @@ export function _decodeString(param) {
 
 // create event function name
 export function _createEventName(txt) {
-    let txt = encodeURI(txt).replace(/%/g,""); // need encode because text maybe chinese
-    return '_'+txt+'_Callback';
+    var str = encodeURI(txt).replace(/%/g,""); // need encode because text maybe chinese
+    return '_'+str+'_Callback';
 }

@@ -1,6 +1,3 @@
-/**
- * Created by kHRYSTAL on 17/12/15.
- */
 import {_registerHandler, _callHandler} from '../core/output'
 
 /**

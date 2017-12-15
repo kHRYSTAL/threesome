@@ -1,0 +1,45 @@
+{
+  "name": "threesome",
+  "version": "0.0.1",
+  "description": "threesome webkit",
+  "main": "threesome-sdk.js",
+  "author": "kHRYSTAL",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-jest": "^19.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "browserify": "^14.5.0",
+    "fs": "^0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "jest": "^19.0.2",
+    "jest-cli": "^19.0.2",
+    "path": "^0.12.7",
+    "regenerator-runtime": "^0.10.3",
+    "replacestream": "^4.0.2",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-json": "^2.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-uglify": "^1.0.1",
+    "uglify-js": "^2.8.12",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "gulp-jest": "^1.0.0",
+    "lodash": "^4.17.4"
+  },
+  "scripts": {
+    "build": "gulp build --gulpfile build/build.js",
+    "test": "jest",
+    "server": "http-server -c-1 -p 8082"
+  }
+}

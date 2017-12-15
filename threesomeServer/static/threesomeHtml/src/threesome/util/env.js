@@ -1,6 +1,3 @@
-/**
- * Created by kHRYSTAL on 17/12/14.
- */
 // judge js run env
 export const inBrowser =
     typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]'

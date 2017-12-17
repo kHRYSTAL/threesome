@@ -8,13 +8,17 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import java.util.concurrent.TimeUnit;
 
 import me.khrystal.threesome.core.BridgeWebViewClient;
 import me.khrystal.threesome.util.StringUtil;
+import me.khrystal.threesomeandroid.AppUtil;
+import me.khrystal.threesomeandroid.utils.IntentUtil;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,6 +48,7 @@ public class WebViewDelegate {
 
     private WebPageStateListener webListener;
     private WebPageInterceptListener interceptListener;
+    private OverrideDigestAdapter digestAdapter;
     private Subscription loadUriDelayOb;
 
     // default load type = open group
@@ -63,7 +68,37 @@ public class WebViewDelegate {
     }
 
     private void configWebView() {
-        // TODO: 17/12/15  
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setVerticalScrollBarEnabled(true);
+        webViewClient = new SimpleWebViewClient();
+        webView.setWebViewClient(webViewClient);
+        webView.setWebChromeClient(new SimpleWebChromeClient());
+
+        WebSettings settings = webView.getSettings();
+        // display
+        settings.setDefaultTextEncodingName(ENCODE);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        settings.setLoadWithOverviewMode(true);
+        // storage
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        String dir = webView.getContext().getDir("threesome_webview_sample_db", Context.MODE_PRIVATE).getPath();
+        settings.setDatabasePath(dir);
+        // UA
+        String originalUA = settings.getUserAgentString();
+        String curUA = originalUA + " " + "threesome" + '/' + AppUtil.getVersionName(webView.getContext());
+        settings.setUserAgentString(curUA);
+        // default not use cache
+        settings.setAppCacheEnabled(false);
+        // cache mode is not use cache
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setAppCacheMaxSize(1024 * 1024 * 5 * 1L);
+        // js, must true
+        settings.setJavaScriptEnabled(true);
+
+
     }
 
     //region public method
@@ -95,7 +130,10 @@ public class WebViewDelegate {
         if (!StringUtil.isNullOrEmpty(errorUrl)) {
             this.errorUrl = errorUrl;
         }
+    }
 
+    public void setOverrideDigestAdapter(OverrideDigestAdapter adapter) {
+        this.digestAdapter = adapter;
     }
 
     /**
@@ -245,9 +283,61 @@ public class WebViewDelegate {
         public boolean shouldOverrideUrl(WebView view, String url) {
             if (StringUtil.isNullOrEmpty(url))
                 return false;
-            // TODO: 17/12/16
-
+            if (processSystemUrl(url)) {
+                return true;
+            }
+            if (digestAdapter != null && digestAdapter.digestUrl(url)) {
+                return true;
+            }
+            if (checkURL302(view, url)) {
+                return false;
+            }
+            if (!url.equals(errorUrl) && !url.startsWith("javascript")) {
+                mOverrideUrl = url;
+            }
+            switch (loadFlag) {
+                case FLAG_LOAD_NEW_ACTIVITY:
+                    // TODO: 17/12/17 start a new activity
+                    break;
+                case FLAG_LOAD_CUR_ACTIVITY:
+                    view.loadUrl(url);
+                    break;
+            }
             return true;
+        }
+
+        private boolean processSystemUrl(String url) {
+            boolean result = false;
+            if (url.startsWith("tel:")) {
+                String phoneNum = url.replace("tel:", "");
+                IntentUtil.dialTo(context, phoneNum);
+                result = true;
+            } else if (url.startsWith("mailto:")) {
+                String mailAdress = url.replace("mailto:", "");
+                IntentUtil.intentToSendMail(context, mailAdress);
+                result = true;
+            }
+            return result;
+        }
+
+        private boolean checkURL302(WebView view, String url) {
+            WebView.HitTestResult hitTestResult = view.getHitTestResult();
+            int hitType = WebView.HitTestResult.UNKNOWN_TYPE;
+            boolean resultIsNull = false;
+
+            if (hitTestResult == null) {
+                resultIsNull = true;
+            } else {
+                hitType = hitTestResult.getType();
+            }
+            // if result is null, 302
+            if (resultIsNull || hitType == WebView.HitTestResult.UNKNOWN_TYPE) {
+                return true;
+                // if unknown type, 302
+            } else {
+                // not 302;
+                return false;
+            }
         }
 
         @Override
@@ -257,6 +347,16 @@ public class WebViewDelegate {
                 return interceptListener.shouldInterceptRequest(response, view, url);
             } else {
                 return response;
+            }
+        }
+    }
+
+    private final class SimpleWebChromeClient extends WebChromeClient {
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            if (webListener != null) {
+                webListener.onReceivedTitle(title);
             }
         }
     }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="title_text" type="id" />
+    <item name="title_arrow" type="id" />
+    <item name="custom_titile" type="id" />
+    <item name="title_drop_arrow" type="id" />
+    <item name="status_bar" type="id" />
+</resources>

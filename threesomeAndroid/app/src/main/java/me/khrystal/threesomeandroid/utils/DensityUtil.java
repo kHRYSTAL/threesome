@@ -1,6 +1,8 @@
 package me.khrystal.threesomeandroid.utils;
 
 import android.content.Context;
+import android.util.TypedValue;
+import android.widget.TextView;
 
 import me.khrystal.threesomeandroid.app.SampleApplication;
 
@@ -13,6 +15,11 @@ import me.khrystal.threesomeandroid.app.SampleApplication;
  */
 
 public class DensityUtil {
+
+    public static void setTextSize(TextView tv, int resId) {
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, SampleApplication.CONTEXT
+                .getResources().getDimension(resId));
+    }
 
     public static int dip2px(Context context, float dipValue) {
         float scale = context.getResources().getDisplayMetrics().density;

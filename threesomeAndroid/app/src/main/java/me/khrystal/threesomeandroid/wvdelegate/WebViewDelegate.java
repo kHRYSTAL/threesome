@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import me.khrystal.threesome.core.BridgeWebViewClient;
 import me.khrystal.threesome.util.StringUtil;
-import me.khrystal.threesomeandroid.AppUtil;
+import me.khrystal.threesomeandroid.utils.AppUtil;
 import me.khrystal.threesomeandroid.utils.IntentUtil;
 import rx.Observable;
 import rx.Subscription;

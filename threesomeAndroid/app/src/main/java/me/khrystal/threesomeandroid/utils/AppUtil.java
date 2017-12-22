@@ -1,4 +1,4 @@
-package me.khrystal.threesomeandroid;
+package me.khrystal.threesomeandroid.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

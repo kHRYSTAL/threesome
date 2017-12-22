@@ -2,7 +2,7 @@ package me.khrystal.threesomeandroid.widget.titlebar;
 
 import android.view.View;
 
-public interface OnTitleClickListner {
+public interface OnTitleClickListener {
 
     void onTitleClicked(View view, int tagId);
 }

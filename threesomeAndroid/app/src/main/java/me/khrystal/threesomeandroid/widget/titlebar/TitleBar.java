@@ -31,7 +31,7 @@ public class TitleBar implements View.OnClickListener {
 
     private SparseArray<View> buttons;
 
-    protected OnTitleClickListner titleListener;
+    protected OnTitleClickListener titleListener;
 
     protected View titleLayout;
     protected LinearLayout rightContainer;
@@ -43,7 +43,7 @@ public class TitleBar implements View.OnClickListener {
 
     protected View root;
 
-    public TitleBar(final View view, final OnTitleClickListner titleListener) {
+    public TitleBar(final View view, final OnTitleClickListener titleListener) {
         this.root = view;
         this.titleListener = titleListener;
         this.titleLayout = this.root.findViewById(R.id.custom_titile);
@@ -51,7 +51,7 @@ public class TitleBar implements View.OnClickListener {
     }
 
     public TitleBar(final View view, View titleLayout,
-                    OnTitleClickListner titleListener) {
+                    OnTitleClickListener titleListener) {
         this.root = view;
         this.titleListener = titleListener;
         this.titleLayout = titleLayout;
@@ -268,7 +268,7 @@ public class TitleBar implements View.OnClickListener {
         return titleText;
     }
 
-    public void setBackGroup(int bgResId) {
+    public void setBackgroud(int bgResId) {
         this.titleLayout.setBackgroundResource(bgResId);
     }
 

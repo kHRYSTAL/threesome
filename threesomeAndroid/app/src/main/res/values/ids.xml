@@ -5,4 +5,8 @@
     <item name="custom_titile" type="id" />
     <item name="title_drop_arrow" type="id" />
     <item name="status_bar" type="id" />
+    <!-- fragment ids -->
+    <item name="frag_container" type="id" />
+    <item name="frag_container_rl" type="id" />
+
 </resources>

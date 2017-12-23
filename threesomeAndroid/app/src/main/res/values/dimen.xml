@@ -2,4 +2,6 @@
 <resources>
     <dimen name="app_title_text_size">18sp</dimen>
     <dimen name="app_title_btn_text_size">16sp</dimen>
+    <dimen name="status_bar_height">0dp</dimen>
+    <dimen name="title_height">48dp</dimen>
 </resources>

@@ -100,8 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract int titleType();
 
-    protected abstract void configStartAnim(Intent intent);
-
     public abstract void updateStatusBarColor(int resId);
 
     public abstract void updateTitleBarColor(int resId);

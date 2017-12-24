@@ -1,5 +1,7 @@
 package me.khrystal.threesomeandroid.widget.titlebar;
 
+import java.io.Serializable;
+
 /**
  * usage: use threesome previous load set background or color
  * author: kHRYSTAL
@@ -8,5 +10,5 @@ package me.khrystal.threesomeandroid.widget.titlebar;
  * email: 723526676@qq.com
  */
 
-public class TitleConfig {
+public class TitleConfig implements Serializable {
 }

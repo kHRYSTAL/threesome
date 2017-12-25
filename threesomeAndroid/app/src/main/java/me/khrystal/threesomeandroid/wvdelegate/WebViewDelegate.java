@@ -1,9 +1,13 @@
 package me.khrystal.threesomeandroid.wvdelegate;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -12,6 +16,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +61,10 @@ public class WebViewDelegate {
 
     private Context context;
     private SimpleWebViewClient webViewClient;
+
+    private FrameLayout webVideoContainer;
+    private View xCustomView;
+    private WebChromeClient.CustomViewCallback xCustomViewCallback;
 
     private String currentUrl;
     private String host;
@@ -173,6 +182,10 @@ public class WebViewDelegate {
     public void goBack() {
         webView.goBack();
     }
+
+    public void setFrameLayout(FrameLayout videoView) {
+        this.webVideoContainer = videoView;
+    }
     //endregion
 
     //region lifecycle
@@ -189,7 +202,7 @@ public class WebViewDelegate {
             webView.loadUrl("about:blank");
             ViewGroup vg = (ViewGroup) webView.getParent();
             webView.clearCache(true);
-            webView.clearHistory();;
+            webView.clearHistory();
             if (vg != null) {
                 vg.removeView(webView);
             }
@@ -352,12 +365,77 @@ public class WebViewDelegate {
     }
 
     private final class SimpleWebChromeClient extends WebChromeClient {
+
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
             if (webListener != null) {
                 webListener.onReceivedTitle(title);
             }
+        }
+
+        /**
+         * use full screen call this
+         */
+        @Override
+        public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+            if (webVideoContainer != null) {
+                if (context != null) {
+                    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+                if (webView != null) {
+                    webView.setVisibility(View.GONE);
+                }
+
+                // 如果一个视图已经存在
+                if (xCustomView != null && callback != null) {
+                    callback.onCustomViewHidden();
+                    return;
+                }
+                if (view != null && webVideoContainer != null) {
+                    webVideoContainer.addView(view);
+                    xCustomView = view;
+                    xCustomView.setVisibility(View.VISIBLE);
+                    if (webListener != null) {
+                        webListener.onVideoFullScreen();
+                    }
+                }
+                if (xCustomViewCallback != null) {
+                    xCustomViewCallback = callback;
+                }
+                if (webVideoContainer != null) {
+                    webVideoContainer.setVisibility(View.VISIBLE);
+                }
+
+            } else {
+                super.onShowCustomView(view, callback);
+            }
+
+        }
+
+        @SuppressLint("NewApi")
+        @Override
+        // 视频播放退出全屏会被调用的
+        public void onHideCustomView() {
+            if (xCustomView == null || webVideoContainer == null)// 不是全屏播放状态
+                return;
+            webVideoContainer.removeView(xCustomView);
+            if (context != null) {
+                ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+            xCustomView.setVisibility(View.GONE);
+            xCustomView = null;
+            webVideoContainer.setVisibility(View.GONE);
+            if (webListener != null) {
+                webListener.exitVideoFullScreen();
+            }
+            if (xCustomViewCallback != null) {
+                xCustomViewCallback.onCustomViewHidden();
+            }
+            if (webView != null) {
+                webView.setVisibility(View.VISIBLE);
+            }
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);// 排版适应屏幕
         }
     }
 }

@@ -20,4 +20,8 @@ public interface WebPageStateListener {
 
     // page error
     void onPageError();
+
+    void onVideoFullScreen();
+
+    void exitVideoFullScreen();
 }

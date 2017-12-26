@@ -2,7 +2,6 @@ package me.khrystal.threesomeandroid.threesome;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,11 @@ import me.khrystal.threesome.util.StringUtil;
 import me.khrystal.threesomeandroid.R;
 import me.khrystal.threesomeandroid.base.BaseFragment;
 import me.khrystal.threesomeandroid.base.WebViewBaseActivity;
+import me.khrystal.threesomeandroid.threesomeapi.IGroupListener;
+import me.khrystal.threesomeandroid.threesomeapi.NavigateBackTask;
+import me.khrystal.threesomeandroid.threesomeapi.NavigateToTask;
+import me.khrystal.threesomeandroid.threesomeapi.RedirectBackTask;
+import me.khrystal.threesomeandroid.threesomeapi.RedirectToTask;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleBarProxy;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleConfig;
 import me.khrystal.threesomeandroid.wvdelegate.WebPageStateListener;
@@ -80,7 +84,27 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
 
         threesomeWrapper = ThreesomeFacade.bridgeWebView(webview);
         threesomeWrapper.setClient(webViewDelegate.getInnerClient());
-        // TODO: 17/12/25 register task
+
+        //页面任务
+        threesomeWrapper.registerTask(new NavigateToTask(webview, titleBar));
+        threesomeWrapper.registerTask(new RedirectToTask(webview, titleBar));
+        threesomeWrapper.registerTask(new NavigateBackTask(new IGroupListener() {
+            @Override
+            public void onCloseGroup() {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        }));
+        threesomeWrapper.registerTask(new RedirectBackTask(webview, new IGroupListener() {
+            @Override
+            public void onCloseGroup() {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        }));
+
     }
 
     @Override

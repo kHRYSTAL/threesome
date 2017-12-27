@@ -12,27 +12,17 @@ function w(a){return new n(function(b,c){function d(c){return function(d){h[c]=d
 	(global.threesome = factory());
 }(this, (function () { 'use strict';
 
-// judge js run env
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
 var UA = inBrowser && window.navigator.userAgent.toLowerCase();
 var isAndroid = UA && UA.indexOf('android') > 0;
 var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
 var isThreesome = UA && UA.indexOf('threesome') > 0;
-// can set version in app client with threesome, use this value can make different logic in different app version
 var AppVersion = isThreesome && UA.match(/threesome\/([\d\.]*)/)[1];
 
-/**
- * @param targetVersion current server static js version
- * @returns {boolean} if return false, means appVersion is old
- */
 
-var hasConsole = typeof console !== 'undefined';
-function warn(msg) {
-    if (hasConsole) {
-        console.error('[Threesome warning]: ' + msg);
-    }
-}
+
+//与当前app版本比较是否更新
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -310,9 +300,9 @@ function __getRegExpFlags(re) {
 }
 clone.__getRegExpFlags = __getRegExpFlags;
 
-// handle send message to format need encode to support Android and iOS
 function _formatParam(oldParam) {
     var param = clone(oldParam);
+
     if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object') {
         for (var key in param) {
             param[key] = _formatParam(param[key]);
@@ -323,15 +313,14 @@ function _formatParam(oldParam) {
     } else if (typeof param !== 'function') {
         param = param.toString();
     }
+
     return param;
 }
 
-// handle receive message need decode
 function _decodeString(param) {
+    // return decodeURI(param);
     return decodeURIComponent(param);
 }
-
-// create event function name
 
 var callQueue = [];
 var registerQueue = [];
@@ -357,17 +346,21 @@ function createBridge() {
             });
         }
     };
+
     var callback = function callback(realBridge) {
-        var bridge = realBridge;
+        bridge = realBridge;
+
         while (registerQueue.length > 0) {
             var fn = registerQueue.shift();
             fn();
         }
+
         while (callQueue.length > 0) {
             var fn = callQueue.shift();
             fn();
         }
     };
+
     window.WVJBCallbacks = [callback];
     setTimeout(function () {
         var WVJBIframe = document.createElement('iframe');
@@ -384,25 +377,24 @@ function createBridge() {
 
 var bridge = window.WebViewJavascriptBridge ? window.WebViewJavascriptBridge : createBridge();
 
-// receive app client event
 function _registerHandler(name, event) {
     bridge.registerHandler(name, function (res) {
+
         res = _decodeString(res);
         try {
             res = JSON.parse(res);
-        } catch (e) {
-            warn(e);
-        } finally {
+        } catch (e) {} finally {
             event(res);
         }
     });
 }
 
-// call app client event
 function _callHandler(taskName, param) {
+
     return new Promise(function (resolve, reject) {
         if (!(taskName && typeof taskName === "string")) {
-            return reject(taskName + " lost taskName");
+            reject(taskName + " lost argument");
+            return;
         }
 
         var config = {
@@ -413,14 +405,13 @@ function _callHandler(taskName, param) {
             config["param"] = _formatParam(param);
         }
 
-        bridge.callHandler("NativeThreesome", config, function (res) {
+        bridge.callHandler('NativeThreesome', config, function (res) {
+
             res = _decodeString(res);
             try {
                 res = JSON.parse(res);
-            } catch (e) {
-                warn(e);
-            } finally {
-                return resolve(res);
+            } catch (e) {} finally {
+                resolve(res);
             }
         });
     });
@@ -429,9 +420,12 @@ function _callHandler(taskName, param) {
 var obMap = {};
 
 
+
 function _notifyCenter() {
+
     _registerHandler('ThreesomeNativeNotification', function (res) {
         var callbacks = obMap[res.type];
+
         var success = 'success' in callbacks ? callbacks.success : function () {};
         var fail = 'fail' in callbacks ? callbacks.fail : function () {};
         var complete = 'complete' in callbacks ? callbacks.complete : function () {};

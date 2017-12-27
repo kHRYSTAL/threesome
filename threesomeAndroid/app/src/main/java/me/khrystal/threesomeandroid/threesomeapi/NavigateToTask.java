@@ -1,6 +1,7 @@
 package me.khrystal.threesomeandroid.threesomeapi;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.WebView;
 
 import java.util.Map;
@@ -38,6 +39,7 @@ public class NavigateToTask extends BaseThreesomeTask {
     @Override
     public Map<String, Object> execute(ThreesomeRequest request) throws Exception {
         String url = request.param.get("url").toString();
+        Log.e("AAAA", url);
         if (webView != null) {
             Context context = webView.getContext();
             TitleConfig config = titleBarProxy.getTitleBackgroundConfig();

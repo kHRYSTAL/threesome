@@ -1,4 +1,4 @@
-import {_registerHandler, _callHandler} from '../core/output'
+import {_registerHandler, _callHandler} from '../interface/output'
 
 /**
  * open a new page

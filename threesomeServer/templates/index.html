@@ -1,44 +1,41 @@
-{% extends 'base_layout.html' %}
-{% block css %}
-    <style>
-        .btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+        <style type='text/css'>
+        html { font-family:Helvetica; color:#222; }
+        h1 { color:steelblue; font-size:24px; margin-top:24px; font-family: 'Fjalla One'}
+        button { margin:0 3px 10px; font-size:12px; }
+        .logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+        a{padding: 4px 2px; font-size: 16px;text-align: center;background-color: aquamarine;margin: 20px;display: block}
     </style>
-{% endblock %}
-{% block conent %}
-    <div class="btn-container">
-        <input id="redirectTo" type="button">redirectTo</input>
-    </div>
-    <div class="btn-container">
-        <input id="navigateTo" type="button">navigateTo</input>
-    </div>
-
-{% endblock %}
-
-{% block js %}
-    <script src="/static/threesomeHtml/dist/threesome-sdk.js"></script>
+</head>
+<body>
+    <div id="log"></div>
+    <script src="/static/threesomeHtml/dist/threesome-sdk.build.js" charset="utf-8"></script>
     <script>
-        function init() {
-            var redirect = document.getElementById('redirectTo');
-            redirect.addEventListener("click", function(){
-                console.log("click redirectTo");
+        threesome.ready(function(){
+            var cgb = document.createElement("a");
+            cgb.innerText = "redirectTo";
+            cgb.addEventListener("click", function(){
                 threesome.redirectTo({
                     url: 'http://www.baidu.com'
                 })
             }, false);
-            var navigate = document.getElementById('navigateTo');
-            navigate.addEventListener("click", function(){
-                console.log("click navigateTo");
-                threesome.redirectTo({
+            document.body.appendChild(cgb);
+            
+            var cgb = document.createElement("a");
+            cgb.innerText = "navigateTo";
+            cgb.addEventListener("click", function(){
+                threesome.navigateTo({
                     url: 'http://www.baidu.com'
                 })
             }, false);
-        }
-
-        threesome.ready(function () {
-            init();
+            document.body.appendChild(cgb);
         });
     </script>
-{% endblock %}
+</body>
+</html>

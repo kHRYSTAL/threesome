@@ -25,8 +25,9 @@ public abstract class BridgeWebViewClient extends WebViewClient {
 
     private BridgeAdapter mAdapter;
 
-    public void setAdapter(BridgeAdapter adapter) {
-        mAdapter = adapter;
+
+    public void setAdapter(BridgeAdapter mAdapter) {
+        this.mAdapter = mAdapter;
     }
 
     @Override
@@ -37,26 +38,21 @@ public abstract class BridgeWebViewClient extends WebViewClient {
         } catch (UnsupportedEncodingException e) {
             Log.e(Constants.TAG, e.getMessage());
         }
-        if (url.trim().equals(BridgeUtil.OVERRIDE_LOAD)) {
+        if (url.trim().equals(BridgeUtil.OVERRIDE_LOADED)) {
             if (BridgeAdapter.toLoadJs != null) {
                 Log.d(Constants.TAG, "load bridge js");
                 BridgeUtil.webViewLoadLocalJs(view, BridgeAdapter.toLoadJs);
             }
-            // interceptor
             return true;
         } else if (url.startsWith(BridgeUtil.RETURN_DATA)) {
             Log.d(Constants.TAG, "hybrid return data");
-            if (mAdapter != null) {
+            if (mAdapter != null)
                 mAdapter.handlerReturnData(url);
-            }
-            // interceptor
             return true;
         } else if (url.startsWith(BridgeUtil.OVERRIDE_SCHEMA)) {
             Log.d(Constants.TAG, "hybrid be called");
-            if (mAdapter != null) {
-                // if response
-                mAdapter.flushMessageQueen();
-            }
+            if (mAdapter != null)
+                mAdapter.flushMessageQueue(); // if response data == null return
             return true;
         } else {
             Log.d(Constants.TAG, "other client call: " + url);
@@ -64,6 +60,12 @@ public abstract class BridgeWebViewClient extends WebViewClient {
         }
     }
 
+    /**
+     * when onPageFinished load local WebViewJavascriptBridge.js file
+     *
+     * @param view
+     * @param url
+     */
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
@@ -71,18 +73,20 @@ public abstract class BridgeWebViewClient extends WebViewClient {
         if (mAdapter != null) {
             if (mAdapter.getStartupMessage() != null) {
                 for (Message m : (List<Message>) mAdapter.getStartupMessage()) {
-                    Log.d(Constants.TAG, "dispatch bridge message");
+                    Log.d(Constants.TAG, "dispatch bridge Message");
                     mAdapter.dispatchMessage(m);
                 }
                 mAdapter.setStartupMessage(null);
             }
         }
+
         onPageFinish(view, url);
     }
 
+
     @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        super.onReceivedError(view, errorCode, description, failingUrl);
         Log.d(Constants.TAG, "onReceivedError");
     }
 

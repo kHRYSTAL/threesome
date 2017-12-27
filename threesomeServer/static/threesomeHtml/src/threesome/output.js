@@ -1,2 +1,3 @@
 import * as api from './api/output'
-export default Object.assign({}, api);
+import * as lifecycle from './lifecycle/output'
+export default Object.assign({}, api, lifecycle);

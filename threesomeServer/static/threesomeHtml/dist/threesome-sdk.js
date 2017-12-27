@@ -490,7 +490,17 @@ var api = Object.freeze({
 	redirectBack: redirectBack
 });
 
-var Threesome$1 = _extends({}, api);
+function ready(handler) {
+    handler();
+}
+
+
+
+var lifecycle = Object.freeze({
+	ready: ready
+});
+
+var Threesome$1 = _extends({}, api, lifecycle);
 
 return Threesome$1;
 

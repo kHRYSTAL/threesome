@@ -9,29 +9,32 @@
 {% endblock %}
 {% block conent %}
     <div class="btn-container">
-        <button id="redirectTo" type="button" class="btn btn-default">redirectTo</button>
+        <input id="redirectTo" type="button">redirectTo</input>
     </div>
     <div class="btn-container">
-        <button id="navigateTo" type="button" class="btn btn-default">navigateTo</button>
+        <input id="navigateTo" type="button">navigateTo</input>
     </div>
 
 {% endblock %}
 
 {% block js %}
     <script src="/static/threesomeHtml/dist/threesome-sdk.js"></script>
-    <script src="/static/js/jquery-1.12.4.js"></script>
     <script>
         function init() {
-            $('#redirectTo').click(function () {
+            var redirect = document.getElementById('redirectTo');
+            redirect.addEventListener("click", function(){
+                console.log("click redirectTo");
                 threesome.redirectTo({
-                    url: 'http://' + location.host + '/redirectTo.html'
-                });
-            });
-            $('#navigateTo').click(function () {
+                    url: 'http://www.baidu.com'
+                })
+            }, false);
+            var navigate = document.getElementById('navigateTo');
+            navigate.addEventListener("click", function(){
+                console.log("click navigateTo");
                 threesome.redirectTo({
-                    url: 'http://' + location.host + '/navigateTo.html'
-                });
-            });
+                    url: 'http://www.baidu.com'
+                })
+            }, false);
         }
 
         threesome.ready(function () {

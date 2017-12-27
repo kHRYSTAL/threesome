@@ -1,11 +1,11 @@
 package me.khrystal.threesomeandroid.threesome;
 
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -34,6 +34,8 @@ public class ThreesomeActivity extends WebViewBaseActivity {
 
     public static final int TAG_CLOSE = 100;
     private static final int TAG_RIGHT_BTN = 200;
+
+    private ThreesomeFragment threesomeFragment;
 
 
     public static void launch(Context context, String url, String title) {
@@ -83,9 +85,9 @@ public class ThreesomeActivity extends WebViewBaseActivity {
 
         String titleStr = getIntent().getStringExtra(INK_TITLE);
         getTitleBar().setTitle(titleStr);
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        // TODO: 17/12/24 add fragment
+        threesomeFragment = new ThreesomeFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.frag_container, threesomeFragment);
         ft.commit();
     }
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/commons.css"/>
+    <link rel="stylesheet" href="/static/css/base.css"/>
+    {% block css %} {% endblock %}
+</head>
+<body>
+<div class="pg-header">
+    <div class="logo" style="text-align: center;background-color: #1c5a9c;">
+        <a href="#" style="color: #ffffff;font-size:30px;font-weight: bold;text-decoration: none;">
+            Threesome
+        </a>
+    </div>
+</div>
+<div class="pg-body">
+    <div class="content">
+        {% block conent %} {% endblock %}
+    </div>
+</div>
+
+{% block js %}{% endblock %}
+</body>
+</html>

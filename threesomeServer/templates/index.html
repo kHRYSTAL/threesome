@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
-    <h1>Hello Threesome</h1>
-</body>
-</html>
+{% extends 'base_layout.html' %}
+{% block css %}
+    <style>
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+{% endblock %}
+{% block conent %}
+    <div class="btn-container">
+        <button id="redirectTo" type="button" class="btn btn-default">redirectTo</button>
+    </div>
+    <div class="btn-container">
+        <button id="navigateTo" type="button" class="btn btn-default">navigateTo</button>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/threesomeHtml/dist/threesome-sdk.js"></script>
+    <script src="/static/js/jquery-1.12.4.js"></script>
+    <script>
+        function init() {
+            $('#redirectTo').click(function () {
+                threesome.redirectTo({
+                    url: 'http://' + location.host + '/redirectTo.html'
+                });
+            });
+            $('#navigateTo').click(function () {
+                threesome.redirectTo({
+                    url: 'http://' + location.host + '/navigateTo.html'
+                });
+            });
+        }
+
+        threesome.ready(function () {
+            init();
+        });
+    </script>
+{% endblock %}

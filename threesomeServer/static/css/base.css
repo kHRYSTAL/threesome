@@ -1,5 +1,4 @@
 .pg-header {
-    min-width: 1190px;
     height: 48px;
     background-color: #2F72AB;
     line-height: 48px;
@@ -11,7 +10,6 @@
     text-decoration: none;
 }
 .pg-header .logo {
-    width: 200px;
     overflow: hidden;
     height: 48px;
 }
@@ -157,7 +155,7 @@
     top: 0;
     bottom: 0;
     right: 0;
-    left: 205px;
+    left: 0;
     border: 1px solid #dddddd;
     overflow: scroll;
 }

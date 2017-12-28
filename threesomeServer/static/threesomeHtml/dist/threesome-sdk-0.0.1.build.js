@@ -491,4 +491,4 @@ var Threesome$1 = _extends({}, api, lifecycle);
 return Threesome$1;
 
 })));
-//# sourceMappingURL=threesome-sdk.build.js.map
+//# sourceMappingURL=threesome-sdk-0.0.1.build.js.map

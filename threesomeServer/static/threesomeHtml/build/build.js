@@ -33,7 +33,7 @@ gulp.task("build", function () {
     })
         .then((bundle) => {
             bundle.write({
-                dest: '../dist/threesome-sdk.build.js',
+                dest: '../dist/threesome-sdk-' + version + '.build.js',
                 sourceMap: true,
                 format: 'umd',
                 moduleName: 'threesome'
@@ -51,7 +51,7 @@ gulp.task("build", function () {
             return data + bundle;
         })
         .then((code) => {
-            return write('../dist/threesome-sdk.js', banner ? (banner + '\n' + code) : code, code);
+            return write('../dist/threesome-sdk-' + version + '.js', banner ? (banner + '\n' + code) : code, code);
         })
         .then((code) => {
             var minified = uglify.minify(code, {
@@ -64,7 +64,7 @@ gulp.task("build", function () {
                         pure_funcs: ['makeMap']
                     }
                 }).code;
-            return write(path.resolve(__dirname, '../dist/threesome-sdk.min.js'), minified)
+            return write(path.resolve(__dirname, '../dist/threesome-sdk-' + version + '.min.js'), minified)
         })
         .catch((err) => {
             console.log(err);

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import me.khrystal.threesome.util.StringUtil;
 import me.khrystal.threesomeandroid.R;
 import me.khrystal.threesomeandroid.base.WebViewBaseActivity;
+import me.khrystal.threesomeandroid.widget.titlebar.TitleBarProxy;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleConfig;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleCreator;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleType;
@@ -33,7 +34,6 @@ public class ThreesomeActivity extends WebViewBaseActivity {
     public static final String INK_COOKIES_VALUE = "frag_web_cookies_value";
 
     public static final int TAG_CLOSE = 100;
-    private static final int TAG_RIGHT_BTN = 200;
 
     private ThreesomeFragment threesomeFragment;
 
@@ -89,6 +89,19 @@ public class ThreesomeActivity extends WebViewBaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.frag_container, threesomeFragment);
         ft.commit();
+    }
+
+    @Override
+    public void onTitleClicked(View view, int tagId) {
+        switch (tagId) {
+            case TitleBarProxy.TAG_BACK:
+                back();
+                break;
+            case TAG_CLOSE:
+                finish();
+                break;
+        }
+
     }
 
     @Override

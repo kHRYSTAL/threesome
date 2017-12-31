@@ -2,34 +2,78 @@
 {% block css %}
 {% endblock %}
 {% block conent %}
-<div class="btn-group btn-group-vertical">
-    <button id="redirect" type="button" class="btn btn-default btn-lg">
-        redirectTo
-    </button>
-    <button id="navigate" type="button" class="btn btn-default btn-lg">
-        navigateTo
-    </button>
-</div>
+    <h1>Page {{ index }}</h1>
+    <div class="btn-group btn-group-vertical">
+        <button id="redirectTo" type="button" class="btn btn-default btn-lg">
+            redirectTo
+        </button>
+        <button id="navigateTo" type="button" class="btn btn-default btn-lg">
+            navigateTo
+        </button>
+        <button id="redirectBack" type="button" class="btn btn-default btn-lg">
+            redirectBack
+        </button>
+        <button id="navigateBack" type="button" class="btn btn-default btn-lg">
+            navigateBack
+        </button>
+        <button id="showRightTxt" type="button" class="btn btn-default btn-lg">
+            showTitleRightText
+        </button>
+        <button id="setBackground" type="button" class="btn btn-default btn-lg">
+            setTitleBackground
+        </button>
+        <button id="setTxtColor" type="button" class="btn btn-default btn-lg">
+            setTitleTxtColor
+        </button>
+        <button id="setTxtSize" type="button" class="btn btn-default btn-lg">
+            setTitleTxtSize
+        </button>
+    </div>
 {% endblock %}
 
 {% block js %}
     <script src="/static/js/jquery-1.12.4.js"></script>
-    <script src="/static/threesomeHtml/dist/threesome-sdk-0.0.1.build.js" charset="utf-8"></script>
+    <script src="/static/threesomeHtml/dist/threesome-sdk-0.0.2.build.js" charset="utf-8"></script>
     <script>
 
         function init() {
-            $('#redirect').click(function () {
+            $('#redirectTo').click(function () {
                 threesome.redirectTo({
-                    url: 'http://www.baidu.com'
+                    url: 'http://'+location.host + '/index/?index=' + {{ index }}
                 });
             });
-            $('#navigate').click(function () {
+            $('#navigateTo').click(function () {
                 threesome.navigateTo({
-                    url: 'http://www.baidu.com'
+                    url: 'http://'+location.host + '/index/?index=' + {{ index }}
+                });
+            });
+            $('#redirectBack').click(function () {
+                threesome.redirectBack();
+            });
+            $('#navigateBack').click(function () {
+                threesome.navigateBack();
+            });
+            $('#showRightTxt').click(function () {
+                threesome.showTxtRightButton({
+                    txt: 'right',
+                    color: '#000000',
+                    tapColor: '#cccccc'
+                }, function () {
+                    window.console.log("right btn success")
+                }).then(function (res) {
+                    window.console.log("right btn success", res);
                 })
             });
+            $('#setBackground').click(function () {
+                threesome.setNavigationBarBackgroundColor('#dca47f');
+            });
+            $('#setTxtColor').click(function () {
+                threesome.setNavigationBarFontColor('#ff0000');
+            });
+            $('#setTxtSize').click(function () {
+                threesome.setNavigationBarFontSize('12');
+            });
         }
-
         threesome.ready(function () {
             init();
         });

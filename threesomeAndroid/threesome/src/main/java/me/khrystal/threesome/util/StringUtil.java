@@ -12,4 +12,17 @@ public class StringUtil {
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.equals("");
     }
+
+    public static boolean isEquals(String s1, String s2) {
+        if (StringUtil.isNullOrEmpty(s1)) {
+            if (StringUtil.isNullOrEmpty(s2)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return s1.equals(s2);
+        }
+    }
+
 }

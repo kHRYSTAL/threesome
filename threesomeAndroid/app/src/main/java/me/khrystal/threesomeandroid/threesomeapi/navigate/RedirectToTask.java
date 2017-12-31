@@ -1,4 +1,4 @@
-package me.khrystal.threesomeandroid.threesomeapi;
+package me.khrystal.threesomeandroid.threesomeapi.navigate;
 
 import android.webkit.WebView;
 

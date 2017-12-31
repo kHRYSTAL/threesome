@@ -19,6 +19,14 @@ import me.khrystal.threesomeandroid.threesomeapi.navigate.NavigateBackTask;
 import me.khrystal.threesomeandroid.threesomeapi.navigate.NavigateToTask;
 import me.khrystal.threesomeandroid.threesomeapi.navigate.RedirectBackTask;
 import me.khrystal.threesomeandroid.threesomeapi.navigate.RedirectToTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.BackBtnResTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.BackgroundColorTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.BackgroundResTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.LeftTextColorTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.RightBtnAddTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.TextColorTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.TextSizeTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.TitleTextTask;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleBarProxy;
 import me.khrystal.threesomeandroid.widget.titlebar.TitleConfig;
 import me.khrystal.threesomeandroid.wvdelegate.WebPageStateListener;
@@ -85,7 +93,8 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
         threesomeWrapper = ThreesomeFacade.bridgeWebView(webview);
         threesomeWrapper.setClient(webViewDelegate.getInnerClient());
 
-        //页面任务
+
+        //region page task
         threesomeWrapper.registerTask(new NavigateToTask(webview, titleBar));
         threesomeWrapper.registerTask(new RedirectToTask(webview, titleBar));
         threesomeWrapper.registerTask(new NavigateBackTask(new IGroupListener() {
@@ -104,6 +113,20 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
                 }
             }
         }));
+        //endregion
+
+        //标题栏任务
+        if (titleBar != null) {
+            threesomeWrapper.registerTask(new BackgroundColorTask(titleBar));
+            threesomeWrapper.registerTask(new TextColorTask(titleBar));
+            threesomeWrapper.registerTask(new TextSizeTask(titleBar));
+            threesomeWrapper.registerTask(new TitleTextTask(titleBar));
+            threesomeWrapper.registerTask(new BackgroundResTask(titleBar));
+            threesomeWrapper.registerTask(new BackBtnResTask(titleBar));
+            threesomeWrapper.registerTask(new LeftTextColorTask(titleBar));
+            threesomeWrapper.registerTask(new RightBtnAddTask());
+            threesomeWrapper.registerTask(new RightBtnAddTask());
+        }
 
     }
 

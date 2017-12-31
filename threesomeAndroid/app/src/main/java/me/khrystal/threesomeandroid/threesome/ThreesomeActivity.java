@@ -97,7 +97,13 @@ public class ThreesomeActivity extends WebViewBaseActivity {
     }
 
     private void back() {
-        // TODO: 17/12/24
+        if (threesomeFragment.canGoBack()) {
+            threesomeFragment.goBack();
+            getTitleBar().showTitleButton(TAG_CLOSE);
+            getTitleBar().hideRightButtons();
+        } else {
+            finish();
+        }
     }
 
     @Override

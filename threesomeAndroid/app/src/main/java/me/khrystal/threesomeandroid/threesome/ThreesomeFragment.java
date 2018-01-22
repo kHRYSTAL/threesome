@@ -115,7 +115,7 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
         }));
         //endregion
 
-        //标题栏任务
+        // titleBar task
         if (titleBar != null) {
             threesomeWrapper.registerTask(new BackgroundColorTask(titleBar));
             threesomeWrapper.registerTask(new TextColorTask(titleBar));
@@ -124,8 +124,7 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
             threesomeWrapper.registerTask(new BackgroundResTask(titleBar));
             threesomeWrapper.registerTask(new BackBtnResTask(titleBar));
             threesomeWrapper.registerTask(new LeftTextColorTask(titleBar));
-            threesomeWrapper.registerTask(new RightBtnAddTask());
-            threesomeWrapper.registerTask(new RightBtnAddTask());
+            threesomeWrapper.registerTask(new RightBtnAddTask(titleBar));
         }
 
     }

@@ -24,6 +24,7 @@ import me.khrystal.threesomeandroid.threesomeapi.titlebar.BackgroundColorTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.BackgroundResTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.LeftTextColorTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.RightBtnAddTask;
+import me.khrystal.threesomeandroid.threesomeapi.titlebar.RightBtnDelTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.TextColorTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.TextSizeTask;
 import me.khrystal.threesomeandroid.threesomeapi.titlebar.TitleTextTask;
@@ -125,6 +126,7 @@ public class ThreesomeFragment extends BaseFragment implements WebPageStateListe
             threesomeWrapper.registerTask(new BackBtnResTask(titleBar));
             threesomeWrapper.registerTask(new LeftTextColorTask(titleBar));
             threesomeWrapper.registerTask(new RightBtnAddTask(titleBar));
+            threesomeWrapper.registerTask(new RightBtnDelTask(titleBar));
         }
 
     }

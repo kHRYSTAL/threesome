@@ -22,6 +22,7 @@ public enum ThreesomeProtocol {
      */
     BACKGROUNDCOLOR("threesome/titleBar/background/color"),
     RIGHTBTN("threesome/titleBar/button"),
+    RIGHTBTNDEL("threesome/titleBar/button/delete"),
     TEXTCOLOR("threesome/titleBar/title/textColor"),
     TESTSIZE("threesome/titleBar/title/fontSize"),
     TITLETEXT("threesome/titleBar/title/text"),

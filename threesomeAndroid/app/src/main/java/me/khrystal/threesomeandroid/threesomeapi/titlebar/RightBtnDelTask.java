@@ -4,9 +4,11 @@ import java.util.Map;
 
 import me.khrystal.threesome.dto.ThreesomeRequest;
 import me.khrystal.threesome.executor.BaseThreesomeTask;
+import me.khrystal.threesome.task.ThreesomeProtocol;
+import me.khrystal.threesomeandroid.widget.titlebar.TitleBarProxy;
 
 /**
- * usage: TODO
+ * usage:
  * author: kHRYSTAL
  * create time: 17/12/31
  * update time:
@@ -14,13 +16,23 @@ import me.khrystal.threesome.executor.BaseThreesomeTask;
  */
 
 public class RightBtnDelTask extends BaseThreesomeTask {
+
+    private TitleBarProxy titleBarProxy;
+
+    public RightBtnDelTask(TitleBarProxy titleBarProxy) {
+        this.titleBarProxy = titleBarProxy;
+    }
+
     @Override
     public String taskId() {
-        return null;
+        return ThreesomeProtocol.RIGHTBTNDEL.getProtocol();
     }
 
     @Override
     public Map<String, Object> execute(ThreesomeRequest request) throws Exception {
+        if (titleBarProxy != null)
+            titleBarProxy.removeRightButtons();
+
         return null;
     }
 

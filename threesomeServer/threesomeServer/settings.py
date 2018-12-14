@@ -26,7 +26,7 @@ SECRET_KEY = '5c(tx^ge0fz6krl89_lmjx8qd7e0bl^^$2f43_h3lu%%=d*(jg'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'khrystal.tunnel.echomod.cn',
+    'khrystal.cross.echosite.cn',
 ]
 
 
